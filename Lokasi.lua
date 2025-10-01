@@ -896,15 +896,17 @@ end)
 -- ==== (Opsional) Isi contoh awal agar mudah tes ====
 local contoh = [[
     ["KOHANA VOLCANO"] = Vector3.new(-553.05, 19.16, 189.72),
+    ["SISYPUS"] = Vector3.new(-3744.37, -135.57, -1024.23),
+    ["KAMAR HARTA KARUN"] = Vector3.new(-3610.56, -266.57, -1704.04),
+    ["ESOTERIC "] = Vector3.new(3157.00, -1302.73, 1439.00),
     ["PULAU NELAYAN"] = Vector3.new(-32.00, 9.53, 2773.00),
     ["TROPICAL CROVE GUA"] = Vector3.new(-2170.02, 6.04, 3666.16),
     ["TERUMBU KARANG"] = Vector3.new(-3143.09, 2.61, 2127.09),
     ["ARES ROD"] = Vector3.new(-2196.65, 3.85, 3696.99),
     ["PULAU KAWAH"] = Vector3.new(1004.39, 17.80, 5067.86),
     ["MESIN CUACA"] = Vector3.new(-1492.30, 6.50, 1891.34),
-    ["KAMAR HARTA KARUN"] = Vector3.new(-3610.56, -266.57, -1704.04),
     ["WINTWR FOST"] = Vector3.new(1602.30, 4.28, 3278.54),
-    ["ESOTERIC "] = Vector3.new(3157.00, -1302.73, 1439.00),
-    ["SISYPUS"] = Vector3.new(-3744.37, -135.57, -1024.23),
+    
+    
 ]]
 importBox.Text = contoh
