@@ -902,7 +902,9 @@ local contoh = [[
     ["ARES ROD"] = Vector3.new(-2196.65, 3.85, 3696.99),
     ["PULAU KAWAH"] = Vector3.new(1004.39, 17.80, 5067.86),
     ["MESIN CUACA"] = Vector3.new(-1492.30, 6.50, 1891.34),
+    ["KAMAR HARTA KARUN"] = Vector3.new(-3610.56, -266.57, -1704.04),
     ["WINTWR FOST"] = Vector3.new(1602.30, 4.28, 3278.54),
     ["ESOTERIC "] = Vector3.new(3157.00, -1302.73, 1439.00),
+    ["SISYPUS"] = Vector3.new(-3744.37, -135.57, -1024.23),
 ]]
 importBox.Text = contoh
