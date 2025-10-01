@@ -4,12 +4,12 @@ local playerGui = player:WaitForChild("PlayerGui")
 
 -- Daftar URL skrip untuk dijalankan
 local scriptURLs = {
+    "https://raw.githubusercontent.com/upilbalmon/Fish/refs/heads/main/autofish.lua",
     "https://raw.githubusercontent.com/upilbalmon/Fish/refs/heads/main/SellAllFish.lua",
-    "https://raw.githubusercontent.com/upilbalmon/Gunung/refs/heads/main/UiGunung.lua",
     "https://raw.githubusercontent.com/upilbalmon/Fish/refs/heads/main/Lokasi.lua",
 }
 
-local buttonNames = {"Sell All Fish", "GUNUNG", "LOKASI",}
+local buttonNames = {"AUTO FISHING", "Sell All Fish", "LOKASI",}
 
 -- Konfigurasi UI
 local guiSize = UDim2.new(0, 150, 0, 210)
