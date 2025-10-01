@@ -205,7 +205,7 @@ local function startFishingSequence()
             statusLabel.Text = "Status: 2. Requesting Minigame..."
             
             local success, result = pcall(function()
-                return RF_RequestFishingMinigameStarted:InvokeServer(12.75006103515625, 0.8)
+                return RF_RequestFishingMinigameStarted:InvokeServer(12.75006103515625, 0.9)
             end)
 
             if not success then
