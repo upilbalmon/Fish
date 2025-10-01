@@ -6,10 +6,10 @@ local playerGui = player:WaitForChild("PlayerGui")
 local scriptURLs = {
     "https://raw.githubusercontent.com/upilbalmon/Fish/refs/heads/main/SellAllFish.lua",
     "https://raw.githubusercontent.com/upilbalmon/Gunung/refs/heads/main/UiGunung.lua",
-    "https://raw.githubusercontent.com/upilbalmon/Gunung/refs/heads/main/bookmark.lua",
+    "https://raw.githubusercontent.com/upilbalmon/Fish/refs/heads/main/Lokasi.lua",
 }
 
-local buttonNames = {"Sell All Fish", "GUNUNG", "BM",}
+local buttonNames = {"Sell All Fish", "GUNUNG", "LOKASI",}
 
 -- Konfigurasi UI
 local guiSize = UDim2.new(0, 150, 0, 210)
