@@ -24,7 +24,7 @@ local RE_FishingCompleted = netFolder:WaitForChild("RE/FishingCompleted")
 
 -- Main Frame
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 220, 0, 150)
+mainFrame.Size = UDim2.new(0, 220, 0, 120)
 mainFrame.Position = UDim2.new(1, -230, 0, 10)
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 mainFrame.BackgroundTransparency = 0.7 
@@ -52,36 +52,9 @@ titleLabel.Parent = mainFrame
 -- Content Frame
 local contentFrame = Instance.new("Frame")
 contentFrame.Size = UDim2.new(1, -10, 1, -25)
-contentFrame.Position = UDim2.new(0, 5, 0, 25)
+contentFrame.Position = UDim2.new(0, 5, 0, 5)
 contentFrame.BackgroundTransparency = 1
 contentFrame.Parent = mainFrame
-
--- Delay 1 Input
-local delay1Label = Instance.new("TextLabel")
-delay1Label.Size = UDim2.new(0.5, 0, 0, 20)
-delay1Label.Position = UDim2.new(0, 0, 0, 0)
-delay1Label.BackgroundTransparency = 1
-delay1Label.Text = "Delay 1 (C->R):"
-delay1Label.TextColor3 = Color3.fromRGB(200, 200, 200)
-delay1Label.TextXAlignment = Enum.TextXAlignment.Left
-delay1Label.TextSize = 12
-delay1Label.Font = Enum.Font.Gotham
-delay1Label.Parent = contentFrame
-
-local delay1Box = Instance.new("TextBox")
-delay1Box.Size = UDim2.new(0.4, 0, 0, 20)
-delay1Box.Position = UDim2.new(0.55, 0, 0, 0)
-delay1Box.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-delay1Box.TextColor3 = Color3.fromRGB(255, 255, 255)
-delay1Box.Text = "3"
-delay1Box.PlaceholderText = "Detik"
-delay1Box.TextSize = 12
-delay1Box.Font = Enum.Font.Gotham
-delay1Box.Parent = contentFrame
-
-local delay1Corner = Instance.new("UICorner")
-delay1Corner.CornerRadius = UDim.new(0, 3)
-delay1Corner.Parent = delay1Box
 
 -- Delay 2 Input
 local delay2Label = Instance.new("TextLabel")
@@ -100,7 +73,7 @@ delay2Box.Size = UDim2.new(0.4, 0, 0, 20)
 delay2Box.Position = UDim2.new(0.55, 0, 0, 22)
 delay2Box.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 delay2Box.TextColor3 = Color3.fromRGB(255, 255, 255)
-delay2Box.Text = "0.5"
+delay2Box.Text = "1"
 delay2Box.PlaceholderText = "Detik"
 delay2Box.TextSize = 12
 delay2Box.Font = Enum.Font.Gotham
@@ -121,35 +94,20 @@ statusLabel.TextSize = 12
 statusLabel.Font = Enum.Font.Gotham
 statusLabel.Parent = contentFrame
 
--- Start Button
-local startButton = Instance.new("TextButton")
-startButton.Size = UDim2.new(1, 0, 0, 30)
-startButton.Position = UDim2.new(0, 0, 0, 75)
-startButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-startButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-startButton.Text = "START SEQUENCE"
-startButton.TextSize = 14
-startButton.Font = Enum.Font.GothamBold
-startButton.Parent = contentFrame
+-- Toggle Button (Start/Stop)
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(1, 0, 0, 30)
+toggleButton.Position = UDim2.new(0, 0, 0, 75)
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.Text = "START"
+toggleButton.TextSize = 14
+toggleButton.Font = Enum.Font.GothamBold
+toggleButton.Parent = contentFrame
 
-local startCorner = Instance.new("UICorner")
-startCorner.CornerRadius = UDim.new(0, 4)
-startCorner.Parent = startButton
-
--- Stop Button
-local stopButton = Instance.new("TextButton")
-stopButton.Size = UDim2.new(1, 0, 0, 25)
-stopButton.Position = UDim2.new(0, 0, 0, 110)
-stopButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-stopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-stopButton.Text = "STOP"
-stopButton.TextSize = 12
-stopButton.Font = Enum.Font.GothamBold
-stopButton.Parent = contentFrame
-
-local stopCorner = Instance.new("UICorner")
-stopCorner.CornerRadius = UDim.new(0, 4)
-stopCorner.Parent = stopButton
+local toggleCorner = Instance.new("UICorner")
+toggleCorner.CornerRadius = UDim.new(0, 4)
+toggleCorner.Parent = toggleButton
 
 -- Variabel kontrol
 local isRunning = false
@@ -164,11 +122,12 @@ local function startFishingSequence()
     end
     
     isRunning = true
-    startButton.BackgroundColor3 = Color3.fromRGB(0, 100, 0)
-    startButton.Text = "RUNNING..."
+    toggleButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+    toggleButton.Text = "STOP"
 
-    local delay1 = tonumber(delay1Box.Text) or 3
-    local delay2 = tonumber(delay2Box.Text) or 0.5
+    -- Delay 1 permanen 0.1 detik
+    local delay1 = 0.1
+    local delay2 = tonumber(delay2Box.Text) or 1
 
     statusLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
     
@@ -192,13 +151,10 @@ local function startFishingSequence()
             
             print("✅ Charge event success")
             
-            -- Tunggu Delay 1
+            -- Tunggu Delay 1 (Permanen 0.1 detik)
             if not isRunning then break end
-            for i = delay1, 1, -1 do
-                if not isRunning then break end
-                statusLabel.Text = string.format("Status: Wait D1 - %ds", i)
-                wait(1)
-            end
+            statusLabel.Text = "Status: Wait D1 - 0.1s"
+            wait(0.1)
             if not isRunning then break end
 
             -- === TAHAP 2: REQUEST MINIGAME ===
@@ -255,8 +211,8 @@ local function startFishingSequence()
         
         -- Reset state
         isRunning = false
-        startButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-        startButton.Text = "START SEQUENCE"
+        toggleButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+        toggleButton.Text = "START"
         if not string.find(statusLabel.Text, "Stopped") then
             statusLabel.Text = "Status: Ready"
             statusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
@@ -269,16 +225,24 @@ local function stopSystem()
     if not isRunning then return end
     
     isRunning = false
-    startButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
-    startButton.Text = "START SEQUENCE"
+    toggleButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+    toggleButton.Text = "START"
     
     statusLabel.Text = "Status: Stopped by User"
     statusLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 end
 
--- Event Handlers
-startButton.MouseButton1Click:Connect(startFishingSequence)
-stopButton.MouseButton1Click:Connect(stopSystem)
+-- Toggle function untuk satu tombol
+local function toggleSequence()
+    if isRunning then
+        stopSystem()
+    else
+        startFishingSequence()
+    end
+end
+
+-- Event Handler untuk tombol toggle
+toggleButton.MouseButton1Click:Connect(toggleSequence)
 
 -- Tombol Close
 local closeButton = Instance.new("TextButton")
@@ -300,14 +264,12 @@ closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
--- Validasi input
-delay1Box:GetPropertyChangedSignal("Text"):Connect(function()
-    local num = tonumber(delay1Box.Text)
-    if not num or num <= 0 then
-        delay1Box.Text = "0.1"
-    end
+-- Fungsi untuk clear textbox ketika diklik
+delay2Box.MouseButton1Click:Connect(function()
+    delay2Box.Text = ""
 end)
 
+-- Validasi input untuk delay 2
 delay2Box:GetPropertyChangedSignal("Text"):Connect(function()
     local num = tonumber(delay2Box.Text)
     if not num or num <= 0 then
@@ -318,3 +280,5 @@ end)
 print("🎣 Auto Fish Sequence GUI Ready!")
 print("📍 Position: Top Right")
 print("⚡ Executor Compatible")
+print("⏱️  Delay 1: Fixed 0.1s | Delay 2: Default 1s")
+print("🔘 Single Toggle Button: Start/Stop")
