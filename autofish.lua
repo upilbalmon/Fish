@@ -24,7 +24,7 @@ local RE_FishingCompleted = netFolder:WaitForChild("RE/FishingCompleted")
 
 -- Main Frame
 local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 220, 0, 120)
+mainFrame.Size = UDim2.new(0, 220, 0, 140) -- Diperbesar untuk menampung info tambahan
 mainFrame.Position = UDim2.new(1, -230, 0, 10)
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 mainFrame.BackgroundTransparency = 0.7 
@@ -83,10 +83,33 @@ local delay2Corner = Instance.new("UICorner")
 delay2Corner.CornerRadius = UDim.new(0, 3)
 delay2Corner.Parent = delay2Box
 
+-- Counter & Timer Info
+local loopCounterLabel = Instance.new("TextLabel")
+loopCounterLabel.Size = UDim2.new(0.6, 0, 0, 15)
+loopCounterLabel.Position = UDim2.new(0, 0, 0, 45)
+loopCounterLabel.BackgroundTransparency = 1
+loopCounterLabel.Text = "Loop Counter: 0"
+loopCounterLabel.TextColor3 = Color3.fromRGB(180, 180, 255)
+loopCounterLabel.TextXAlignment = Enum.TextXAlignment.Left
+loopCounterLabel.TextSize = 11
+loopCounterLabel.Font = Enum.Font.Gotham
+loopCounterLabel.Parent = contentFrame
+
+local durationLabel = Instance.new("TextLabel")
+durationLabel.Size = UDim2.new(0.4, 0, 0, 15)
+durationLabel.Position = UDim2.new(0.6, 0, 0, 45)
+durationLabel.BackgroundTransparency = 1
+durationLabel.Text = "Duration: 0s"
+durationLabel.TextColor3 = Color3.fromRGB(180, 255, 180)
+durationLabel.TextXAlignment = Enum.TextXAlignment.Right
+durationLabel.TextSize = 11
+durationLabel.Font = Enum.Font.Gotham
+durationLabel.Parent = contentFrame
+
 -- Status Label
 local statusLabel = Instance.new("TextLabel")
 statusLabel.Size = UDim2.new(1, 0, 0, 15)
-statusLabel.Position = UDim2.new(0, 0, 0, 50)
+statusLabel.Position = UDim2.new(0, 0, 0, 62)
 statusLabel.BackgroundTransparency = 1
 statusLabel.Text = "Status: Ready"
 statusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
@@ -97,7 +120,7 @@ statusLabel.Parent = contentFrame
 -- Toggle Button (Start/Stop)
 local toggleButton = Instance.new("TextButton")
 toggleButton.Size = UDim2.new(1, 0, 0, 30)
-toggleButton.Position = UDim2.new(0, 0, 0, 75)
+toggleButton.Position = UDim2.new(0, 0, 0, 85)
 toggleButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
 toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 toggleButton.Text = "START"
@@ -112,6 +135,30 @@ toggleCorner.Parent = toggleButton
 -- Variabel kontrol
 local isRunning = false
 local currentSequence = nil
+local loopCounter = 0
+local startTime = 0
+
+-- Fungsi untuk format waktu
+local function formatTime(seconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = math.floor(seconds % 60)
+    
+    if hours > 0 then
+        return string.format("%02d:%02d:%02d", hours, minutes, secs)
+    else
+        return string.format("%02d:%02d", minutes, secs)
+    end
+end
+
+-- Fungsi untuk update timer
+local function updateTimer()
+    while isRunning do
+        local elapsed = os.time() - startTime
+        durationLabel.Text = "Duration: " .. formatTime(elapsed)
+        wait(1)
+    end
+end
 
 -- Fungsi untuk menjalankan sequence
 local function startFishingSequence()
@@ -124,6 +171,15 @@ local function startFishingSequence()
     isRunning = true
     toggleButton.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
     toggleButton.Text = "STOP"
+
+    -- Reset counter dan timer
+    loopCounter = 0
+    startTime = os.time()
+    loopCounterLabel.Text = "Loop Counter: 0"
+    durationLabel.Text = "Duration: 0s"
+    
+    -- Mulai timer thread
+    spawn(updateTimer)
 
     -- Delay 1 permanen 0.1 detik
     local delay1 = 0.1
@@ -195,9 +251,13 @@ local function startFishingSequence()
                 statusLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
                 warn("Finish Error:", result)
             else
+                -- Update counter setelah berhasil
+                loopCounter = loopCounter + 1
+                loopCounterLabel.Text = "Loop Counter: " .. loopCounter
+                
                 statusLabel.Text = "Status: ✅ Sequence Complete!"
                 statusLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-                print("✅ Finish event fired")
+                print("✅ Finish event fired - Loop: " .. loopCounter)
             end
 
             -- Tunggu sebentar sebelum restart
@@ -230,6 +290,17 @@ local function stopSystem()
     
     statusLabel.Text = "Status: Stopped by User"
     statusLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+    
+    -- Tampilkan statistik akhir
+    local totalDuration = os.time() - startTime
+    print("🎣 Auto Fish Session Ended!")
+    print("📊 Total Loops: " .. loopCounter)
+    print("⏱️  Total Duration: " .. formatTime(totalDuration))
+    
+    if loopCounter > 0 and totalDuration > 0 then
+        local loopsPerMinute = math.floor((loopCounter / totalDuration) * 60)
+        print("📈 Average Speed: " .. loopsPerMinute .. " loops/minute")
+    end
 end
 
 -- Toggle function untuk satu tombol
@@ -282,3 +353,4 @@ print("📍 Position: Top Right")
 print("⚡ Executor Compatible")
 print("⏱️  Delay 1: Fixed 0.1s | Delay 2: Default 1s")
 print("🔘 Single Toggle Button: Start/Stop")
+print("📊 Added: Loop Counter & Duration Timer")
