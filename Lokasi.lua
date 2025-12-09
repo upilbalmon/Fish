@@ -895,6 +895,7 @@ end)
 
 -- ==== (Opsional) Isi contoh awal agar mudah tes ====
 local contoh = [[
+    ["RUIN"] = Vector3.new(6096.88, -585.92, 4645.66),
     ["KOHANA VOLCANO"] = Vector3.new(-553.05, 19.16, 189.72),
     ["SISYPUS"] = Vector3.new(-3744.37, -135.57, -1024.23),
     ["KAMAR HARTA KARUN"] = Vector3.new(-3610.56, -266.57, -1704.04),
@@ -906,7 +907,5 @@ local contoh = [[
     ["PULAU KAWAH"] = Vector3.new(1004.39, 17.80, 5067.86),
     ["MESIN CUACA"] = Vector3.new(-1492.30, 6.50, 1891.34),
     ["WINTWR FOST"] = Vector3.new(1602.30, 4.28, 3278.54),
-    
-    
 ]]
 importBox.Text = contoh
